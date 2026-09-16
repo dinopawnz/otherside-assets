@@ -1,0 +1,495 @@
+[
+  {
+    "name": "flame_vegetation_01_a",
+    "file": "models/flame_vegetation_01_a.glb",
+    "bytes": 408144,
+    "triangles": 3540,
+    "size_m": [
+      1.18,
+      3.17,
+      0.9
+    ],
+    "min_y_m": 0,
+    "emissive": true,
+    "center_xz_m": [
+      -3.0,
+      -0.03
+    ]
+  },
+  {
+    "name": "flame_vegetation_01_b",
+    "file": "models/flame_vegetation_01_b.glb",
+    "bytes": 380704,
+    "triangles": 2344,
+    "size_m": [
+      1.06,
+      2.5,
+      0.82
+    ],
+    "min_y_m": -0.01,
+    "emissive": true,
+    "center_xz_m": [
+      -0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "flame_vegetation_01_c",
+    "file": "models/flame_vegetation_01_c.glb",
+    "bytes": 461540,
+    "triangles": 5880,
+    "size_m": [
+      2.2,
+      4.54,
+      1.44
+    ],
+    "min_y_m": 0.01,
+    "emissive": true,
+    "center_xz_m": [
+      2.94,
+      -0.06
+    ]
+  },
+  {
+    "name": "obsidian_cracked_a",
+    "file": "models/obsidian_cracked_a.glb",
+    "bytes": 305824,
+    "triangles": 1996,
+    "size_m": [
+      0.3,
+      0.21,
+      0.44
+    ],
+    "min_y_m": 0.17,
+    "emissive": false,
+    "center_xz_m": [
+      0.01,
+      0.08
+    ]
+  },
+  {
+    "name": "obsidian_cracked_b",
+    "file": "models/obsidian_cracked_b.glb",
+    "bytes": 321788,
+    "triangles": 1994,
+    "size_m": [
+      0.46,
+      0.35,
+      0.81
+    ],
+    "min_y_m": 0.22,
+    "emissive": false,
+    "center_xz_m": [
+      0.01,
+      0.1
+    ]
+  },
+  {
+    "name": "obsidian_cracked_c",
+    "file": "models/obsidian_cracked_c.glb",
+    "bytes": 330416,
+    "triangles": 1996,
+    "size_m": [
+      0.48,
+      0.31,
+      0.55
+    ],
+    "min_y_m": 0.21,
+    "emissive": false,
+    "center_xz_m": [
+      -0.03,
+      0.09
+    ]
+  },
+  {
+    "name": "obsidian_cracked_d",
+    "file": "models/obsidian_cracked_d.glb",
+    "bytes": 323560,
+    "triangles": 1996,
+    "size_m": [
+      0.29,
+      0.23,
+      0.36
+    ],
+    "min_y_m": 0.06,
+    "emissive": false,
+    "center_xz_m": [
+      -0.03,
+      0.14
+    ]
+  },
+  {
+    "name": "obsidian_cracked_e",
+    "file": "models/obsidian_cracked_e.glb",
+    "bytes": 292992,
+    "triangles": 1996,
+    "size_m": [
+      0.2,
+      0.18,
+      0.2
+    ],
+    "min_y_m": 0,
+    "emissive": false,
+    "center_xz_m": [
+      -0.01,
+      0.08
+    ]
+  },
+  {
+    "name": "obsidian_tower_01_a",
+    "file": "models/obsidian_tower_01_a.glb",
+    "bytes": 909124,
+    "triangles": 16121,
+    "size_m": [
+      14.91,
+      22.47,
+      12.72
+    ],
+    "min_y_m": -0.03,
+    "emissive": false,
+    "center_xz_m": [
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "obsidian_tower_01_c",
+    "file": "models/obsidian_tower_01_c.glb",
+    "bytes": 960256,
+    "triangles": 20065,
+    "size_m": [
+      43.59,
+      72.64,
+      30.67
+    ],
+    "min_y_m": -0.09,
+    "emissive": false,
+    "center_xz_m": [
+      0.04,
+      0.79
+    ]
+  },
+  {
+    "name": "obsidian_tower_02_a",
+    "file": "models/obsidian_tower_02_a.glb",
+    "bytes": 953000,
+    "triangles": 17492,
+    "size_m": [
+      27.61,
+      40.22,
+      20.56
+    ],
+    "min_y_m": -0.07,
+    "emissive": false,
+    "center_xz_m": [
+      -2.27,
+      -2.23
+    ]
+  },
+  {
+    "name": "obsidian_tower_02_b",
+    "file": "models/obsidian_tower_02_b.glb",
+    "bytes": 1035648,
+    "triangles": 18628,
+    "size_m": [
+      17.55,
+      24.36,
+      14.36
+    ],
+    "min_y_m": -0.03,
+    "emissive": false,
+    "center_xz_m": [
+      -0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "obsidian_tower_02_c",
+    "file": "models/obsidian_tower_02_c.glb",
+    "bytes": 1078732,
+    "triangles": 19506,
+    "size_m": [
+      50.57,
+      74.24,
+      36.62
+    ],
+    "min_y_m": 0,
+    "emissive": false,
+    "center_xz_m": [
+      -0.75,
+      -2.67
+    ]
+  },
+  {
+    "name": "root_01_a",
+    "file": "models/root_01_a.glb",
+    "bytes": 338432,
+    "triangles": 3724,
+    "size_m": [
+      2.03,
+      7.68,
+      1.97
+    ],
+    "min_y_m": 0,
+    "emissive": false,
+    "center_xz_m": [
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "root_01_b",
+    "file": "models/root_01_b.glb",
+    "bytes": 396592,
+    "triangles": 3372,
+    "size_m": [
+      5.75,
+      7.78,
+      3.36
+    ],
+    "min_y_m": 0,
+    "emissive": false,
+    "center_xz_m": [
+      -0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "root_01_c",
+    "file": "models/root_01_c.glb",
+    "bytes": 374568,
+    "triangles": 3880,
+    "size_m": [
+      4.57,
+      9.44,
+      4.43
+    ],
+    "min_y_m": 0,
+    "emissive": false,
+    "center_xz_m": [
+      -0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "small_spike_01_a",
+    "file": "models/small_spike_01_a.glb",
+    "bytes": 438392,
+    "triangles": 2747,
+    "size_m": [
+      0.56,
+      3.14,
+      0.62
+    ],
+    "min_y_m": -0.34,
+    "emissive": false,
+    "center_xz_m": [
+      0.01,
+      0.07
+    ]
+  },
+  {
+    "name": "small_spike_01_b",
+    "file": "models/small_spike_01_b.glb",
+    "bytes": 390088,
+    "triangles": 3294,
+    "size_m": [
+      0.54,
+      1.87,
+      0.53
+    ],
+    "min_y_m": -0.32,
+    "emissive": false,
+    "center_xz_m": [
+      -0.01,
+      0.0
+    ]
+  },
+  {
+    "name": "small_spike_01_c",
+    "file": "models/small_spike_01_c.glb",
+    "bytes": 317328,
+    "triangles": 2090,
+    "size_m": [
+      0.49,
+      1.27,
+      0.46
+    ],
+    "min_y_m": -0.29,
+    "emissive": false,
+    "center_xz_m": [
+      -0.01,
+      -0.01
+    ]
+  },
+  {
+    "name": "spire_01_a1",
+    "file": "models/spire_01_a1.glb",
+    "bytes": 597836,
+    "triangles": 8896,
+    "size_m": [
+      5.5,
+      19.89,
+      5.94
+    ],
+    "min_y_m": -3.13,
+    "emissive": false,
+    "center_xz_m": [
+      0.13,
+      -0.14
+    ]
+  },
+  {
+    "name": "spire_01_a2",
+    "file": "models/spire_01_a2.glb",
+    "bytes": 556052,
+    "triangles": 8565,
+    "size_m": [
+      5.63,
+      19.47,
+      5.75
+    ],
+    "min_y_m": -2.71,
+    "emissive": false,
+    "center_xz_m": [
+      0.12,
+      -0.01
+    ]
+  },
+  {
+    "name": "spire_01_b",
+    "file": "models/spire_01_b.glb",
+    "bytes": 442700,
+    "triangles": 5514,
+    "size_m": [
+      3.84,
+      17.48,
+      3.97
+    ],
+    "min_y_m": -2.68,
+    "emissive": false,
+    "center_xz_m": [
+      0.0,
+      -0.04
+    ]
+  },
+  {
+    "name": "spire_01_c",
+    "file": "models/spire_01_c.glb",
+    "bytes": 488796,
+    "triangles": 5501,
+    "size_m": [
+      4.04,
+      14.91,
+      3.59
+    ],
+    "min_y_m": -2.23,
+    "emissive": false,
+    "center_xz_m": [
+      0.14,
+      0.04
+    ]
+  },
+  {
+    "name": "swirly_tree_01_a",
+    "file": "models/swirly_tree_01_a.glb",
+    "bytes": 545140,
+    "triangles": 8286,
+    "size_m": [
+      17.64,
+      20.81,
+      14.7
+    ],
+    "min_y_m": -3.25,
+    "emissive": false,
+    "center_xz_m": [
+      -0.53,
+      -1.77
+    ]
+  },
+  {
+    "name": "swirly_tree_01_b",
+    "file": "models/swirly_tree_01_b.glb",
+    "bytes": 549320,
+    "triangles": 8138,
+    "size_m": [
+      9.8,
+      12.37,
+      7.8
+    ],
+    "min_y_m": -1.52,
+    "emissive": false,
+    "center_xz_m": [
+      -0.83,
+      -0.09
+    ]
+  },
+  {
+    "name": "swirly_tree_01_c",
+    "file": "models/swirly_tree_01_c.glb",
+    "bytes": 488572,
+    "triangles": 7270,
+    "size_m": [
+      22.38,
+      28.47,
+      17.57
+    ],
+    "min_y_m": -4.96,
+    "emissive": false,
+    "center_xz_m": [
+      -1.17,
+      -0.44
+    ]
+  },
+  {
+    "name": "swirly_tree_02_a",
+    "file": "models/swirly_tree_02_a.glb",
+    "bytes": 424600,
+    "triangles": 6120,
+    "size_m": [
+      5.96,
+      5.2,
+      3.23
+    ],
+    "min_y_m": -0.54,
+    "emissive": false,
+    "center_xz_m": [
+      -0.2,
+      -0.28
+    ]
+  },
+  {
+    "name": "swirly_tree_02_b",
+    "file": "models/swirly_tree_02_b.glb",
+    "bytes": 428632,
+    "triangles": 7796,
+    "size_m": [
+      18.06,
+      16.77,
+      12.64
+    ],
+    "min_y_m": -1.74,
+    "emissive": false,
+    "center_xz_m": [
+      -0.59,
+      0.73
+    ]
+  },
+  {
+    "name": "swirly_tree_02_c",
+    "file": "models/swirly_tree_02_c.glb",
+    "bytes": 478528,
+    "triangles": 7420,
+    "size_m": [
+      16.9,
+      21.91,
+      14.56
+    ],
+    "min_y_m": -1,
+    "emissive": false,
+    "center_xz_m": [
+      1.14,
+      0.65
+    ]
+  }
+]
