@@ -1,5 +1,5 @@
 <!--
-  THE CHOCOLATE FACTORY  v2  -  Otherside MML
+  THE CHOCOLATE FACTORY  v2.1  -  Otherside MML  (crew: candy_crew_orange_greenhair)
   ============================================================
   LIVE BUILD: this document starts as a small PLACER (a chocolate bar). Open the host remote (factory_remote.html, PIN 2462 = C-H-O-C)
   and press LIVE BUILD to raise the factory. Press it again to fold everything back into the placer.
@@ -256,12 +256,13 @@
       return m;
     }
     later(3000, () => D.anims.forEach(placeAnim));
-    // the candy crew: an original little worker with a cap; one arm works (stir / chop / hammer / carry / wave), the body bobs
-    const POSE = { stir: [-75, -45, 1400], chop: [-120, -15, 700], hammer: [-150, -10, 650], carry: [-30, 30, 900], wave: [-170, -130, 600],
-                   chat: [-60, -20, 1100], talk: [-100, -35, 800] };
+    // the candy crew: every worker is the orange green-haired crew model (cf2_crew_orange, one piece with its arms).
+    // walkers stroll a loop with a waddle; carriers hold a crate / tray in front; the rest bob and sway at their jobs
+    const CREW = "cf2_crew_orange";
+    const WORK = { stir: ["rx", -3, 4, 1400], chop: ["rx", 0, 6, 700], hammer: ["rx", 0, 7, 650], carry: ["rx", 0, 4, 900],
+                   wave: ["rz", -7, 7, 600], chat: ["rz", -3, 3, 1500], talk: ["rz", -4, 4, 900] };
     function worker([v, x, y, z, ry, pose, tool, R, ms], i) {
       if (pose === "walk" || pose === "walkc") {
-        // a stroll round a loop: the loop turns, the walker waddles along it swinging its arms (or carrying a crate / tray in front)
         const g = el("m-group", { x, y, z, "data-lite": "1" });
         const dir = ry < 0 ? -1 : 1;
         const loop = el("m-group", {}, g);
@@ -271,29 +272,18 @@
         const step = pose === "walk" ? 430 : 520;
         anim(bob, "y", 0, 0.06, step / 2, { pingPong: true, easing: "easeInOutSine" });
         anim(bob, "rz", -5, 5, step, { pingPong: true, easing: "easeInOutSine" });
-        model("cf2_w_body_" + v, {}, bob);
-        const cr = pose === "walkc";
-        const aL = el("m-group", cr ? { x: -0.335, y: 0.775, rx: -72, rz: -12 } : { x: -0.335, y: 0.775 }, bob); model("cf2_w_arm_" + v, {}, aL);
-        const aR = el("m-group", cr ? { x: 0.335, y: 0.775, rx: -72, rz: 12 } : { x: 0.335, y: 0.775 }, bob); model("cf2_w_arm_" + v, {}, aR);
-        if (!cr) {
-          anim(aL, "rx", -28, 28, step, { pingPong: true, easing: "easeInOutSine" });
-          anim(aR, "rx", 28, -28, step, { pingPong: true, easing: "easeInOutSine" });
-        } else {
-          model("cf2_w_" + (tool || "crate"), { y: tool === "tray" ? 0.88 : 0.66, z: 0.42, sx: 0.9, sy: 0.9, sz: 0.9 }, bob);
-        }
+        model(CREW, {}, bob);
+        if (pose === "walkc") model("cf2_w_" + (tool || "crate"), { y: tool === "tray" ? 0.88 : 0.66, z: 0.46, sx: 0.9, sy: 0.9, sz: 0.9 }, bob);
         return;
       }
       const g = el("m-group", { x, y, z, ry });
       const bob = el("m-group", {}, g);
       anim(bob, "y", 0, 0.05, 520 + (i % 5) * 40, { pingPong: true, easing: "easeInOutSine", delay: i * 97 });
-      if (pose === "chat" || pose === "talk") anim(bob, "rz", -3, 3, 1500 + (i % 3) * 200, { pingPong: true, easing: "easeInOutSine", delay: i * 53 });
-      model("cf2_w_body_" + v, {}, bob);
-      const aL = el("m-group", { x: -0.335, y: 0.775, rx: pose === "carry" ? -40 : 8 }, bob); model("cf2_w_arm_" + v, {}, aL);
-      const aR = el("m-group", { x: 0.335, y: 0.775 }, bob); model("cf2_w_arm_" + v, {}, aR);
-      if (tool) model("cf2_w_" + tool, {}, aR);
-      const P = POSE[pose] || POSE.carry;
-      anim(aR, "rx", P[0], P[1], P[2], { pingPong: true, easing: "easeInOutSine", delay: i * 131 });
-      if (pose === "talk") anim(aL, "rx", -20, 10, 1300, { pingPong: true, easing: "easeInOutSine", delay: i * 71 });
+      const W = WORK[pose] || WORK.carry;
+      const sway = el("m-group", {}, bob);
+      anim(sway, W[0], W[1], W[2], W[3] + (i % 4) * 60, { pingPong: true, easing: "easeInOutSine", delay: i * 131 });
+      if (pose === "chat" || pose === "talk") anim(g, "ry", ry - 10, ry + 10, 2600 + (i % 3) * 300, { pingPong: true, easing: "easeInOutSine", delay: i * 53 });
+      model(CREW, {}, sway);
     }
     later(3500, () => D.workers.forEach(worker));
     // candy-coloured smoke from the seven stacks (two puffs each)
