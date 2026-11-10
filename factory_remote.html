@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chocolate Factory Remote</title>
+<style>
+  :root { --bg:#1b0f0a; --card:#2a1810; --edge:#5a3520; --text:#fbeedd; --dim:#c9a98a; --gold:#f2b84b; --pink:#ff6fb5; --mint:#3ddc97; --red:#ff5a5a; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.4 system-ui, -apple-system, Segoe UI, sans-serif; }
+  header { padding:14px 16px; background:linear-gradient(90deg,#4a2412,#2a1810); border-bottom:2px solid var(--gold); }
+  h1 { margin:0; font-size:20px; color:var(--gold); letter-spacing:.5px; }
+  main { padding:12px 16px 40px; max-width:980px; margin:0 auto; display:grid; gap:12px; }
+  .card { background:var(--card); border:1px solid var(--edge); border-radius:12px; padding:12px; }
+  .card h2 { margin:0 0 8px; font-size:14px; color:var(--gold); text-transform:uppercase; letter-spacing:1px; }
+  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  input { background:#140a06; color:var(--text); border:1px solid var(--edge); border-radius:8px; padding:9px 10px; font:inherit; min-width:0; }
+  input.url { flex:1 1 320px; } input.pin { width:90px; }
+  button { background:#4a2a18; color:var(--text); border:1px solid #7a4a2c; border-radius:8px; padding:9px 12px; font:inherit; cursor:pointer; }
+  button:hover { border-color:var(--gold); } button.big { background:var(--pink); color:#2a0d1c; font-weight:700; border-color:var(--pink); }
+  button.go { background:var(--mint); color:#062015; border-color:var(--mint); font-weight:700; }
+  .dot { width:10px; height:10px; border-radius:50%; background:var(--red); display:inline-block; }
+  .dot.on { background:var(--mint); }
+  .stat { color:var(--dim); font-size:13px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  td { padding:6px 4px; border-top:1px solid var(--edge); }
+  td.code { font-family:ui-monospace,Consolas,monospace; color:var(--gold); }
+  #log { font-family:ui-monospace,Consolas,monospace; font-size:12px; color:var(--dim); max-height:180px; overflow:auto; white-space:pre-wrap; }
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+</style>
+</head>
+<body>
+<header><h1>🍫 Chocolate Factory — Host Remote</h1></header>
+<main>
+  <div class="card">
+    <h2>Connect</h2>
+    <div class="row">
+      <input class="url" id="url" placeholder="wss://your-server/factory.html">
+      <input class="pin" id="pin" placeholder="PIN" value="2462">
+      <button class="go" id="connect">Connect</button>
+      <span class="dot" id="dot"></span><span class="stat" id="cstat">not connected</span>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Build</h2>
+    <div class="row">
+      <button class="big" data-cmd="build">LIVE BUILD</button>
+      <button data-cmd="unbuild">FOLD BACK TO PLACER</button>
+      <button data-cmd="lite on">LITE ON</button><button data-cmd="lite off">LITE OFF</button>
+      <button data-cmd="refresh">REFRESH</button>
+    </div>
+    <div class="stat" id="gstat" style="margin-top:8px">—</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>Gates &amp; doors</h2>
+      <div class="row"><b style="width:110px">Gates</b><button data-cmd="gates open">Open</button><button data-cmd="gates close">Close</button></div>
+      <div class="row" style="margin-top:6px"><b style="width:110px">Front doors</b><button data-cmd="doors open">Open</button><button data-cmd="doors close">Close</button></div>
+      <div class="row" style="margin-top:6px"><b style="width:110px">Chocolate doors</b><button data-cmd="main">Open 30 s</button><button data-cmd="main hold">Hold open</button><button data-cmd="main close">Close</button></div>
+    </div>
+    <div class="card">
+      <h2>Boats (only way to floor 2)</h2>
+      <div class="row"><button class="go" data-cmd="boats go">Send up</button><button data-cmd="boats down">Bring down</button><button data-cmd="boats reset">Reset to lagoon</button></div>
+      <div class="row" style="margin-top:6px"><button data-cmd="boats auto on">Auto ON</button><button data-cmd="boats auto off">Auto OFF</button><span class="stat" id="bstat"></span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Coded doors (Oompa Loompa staff)</h2>
+    <table id="doors"></table>
+    <div class="row" style="margin-top:8px"><button data-cmd="door all open">Open all</button><button data-cmd="door all close">Close all</button></div>
+  </div>
+  <div class="card"><h2>Log</h2><div id="log"></div></div>
+</main>
+<script>
+(function () {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  try { $("url").value = localStorage.getItem("cf_url") || "wss://stoppage-granite-bobbing.ngrok-free.dev/factory.html"; } catch (e) { $("url").value = "wss://stoppage-granite-bobbing.ngrok-free.dev/factory.html"; }
+  let ws = null, nodes = new Map(), hostId = null, boardId = null, lastAck = 0;
+  const log = (t) => { const l = $("log"); l.textContent = new Date().toLocaleTimeString() + "  " + t + "\n" + l.textContent.slice(0, 6000); };
+  function addNode(n, parent) {
+    if (!n || n.nodeId === undefined) return;
+    nodes.set(n.nodeId, { tag: n.tag, attrs: Object.assign({}, n.attributes || {}), parent });
+    const id = (n.attributes || {}).id;
+    if (id === "cf-host") hostId = n.nodeId;
+    if (id === "cf-remote") { boardId = n.nodeId; paint(); }
+    (n.children || []).forEach((c) => addNode(c, n.nodeId));
+  }
+  function removeNode(id) { nodes.delete(id); if (id === boardId) boardId = null; }
+  function handle(m) {
+    if (!m || !m.type) return;
+    if (m.type === "snapshot") { nodes = new Map(); hostId = boardId = null; addNode(m.snapshot, null); log("connected - document loaded"); if (hostId !== null) send("remote"); }
+    else if (m.type === "childrenChanged") { (m.removedNodes || []).forEach(removeNode); (m.addedNodes || []).forEach((n) => addNode(n, m.nodeId)); }
+    else if (m.type === "attributeChange" || m.type === "attributesChanged") {
+      const n = nodes.get(m.nodeId); if (!n) return;
+      if (m.attributes) Object.assign(n.attrs, m.attributes); else if (m.newValue === null || m.newValue === undefined) delete n.attrs[m.attribute]; else n.attrs[m.attribute] = m.newValue;
+      if (m.nodeId === boardId) paint();
+    }
+    else if (m.type === "ping") ws.send(JSON.stringify({ type: "pong", pong: m.ping }));
+    else if (m.type === "error" || m.type === "warning") log(m.type.toUpperCase() + ": " + m.message);
+  }
+  function connect() {
+    if (ws) { try { ws.close(); } catch (e) {} }
+    const url = $("url").value.trim(); try { localStorage.setItem("cf_url", url); } catch (e) {}
+    $("cstat").textContent = "connecting…";
+    ws = new WebSocket(url, ["networked-dom-v0.1"]);
+    ws.onopen = () => { $("dot").classList.add("on"); $("cstat").textContent = "connected"; };
+    ws.onclose = () => { $("dot").classList.remove("on"); $("cstat").textContent = "disconnected"; };
+    ws.onerror = () => log("connection error - check the address (wss://…/factory.html)");
+    ws.onmessage = (ev) => { let d; try { d = JSON.parse(ev.data); } catch (e) { return; } (Array.isArray(d) ? d : [d]).forEach(handle); };
+  }
+  function send(cmd) {
+    if (!ws || ws.readyState !== 1 || hostId === null) { log("not connected"); return; }
+    const value = $("pin").value.trim() + " " + cmd;
+    ws.send(JSON.stringify({ type: "event", nodeId: hostId, name: "prompt", bubbles: true, params: { value } }));
+    log("> " + cmd);
+  }
+  function paint() {
+    const b = nodes.get(boardId); if (!b) return;
+    try { const a = JSON.parse(b.attrs["data-ack"] || "{}"); if (a.n && a.n !== lastAck) { lastAck = a.n; log(a.t); } } catch (e) {}
+    let g = {}; try { g = JSON.parse(b.attrs["data-game"] || "{}"); } catch (e) {}
+    $("gstat").textContent = g.built ? "BUILT · " + (g.online || 0) + " online · gates " + (g.gates ? "open" : "shut") + " · front doors " + (g.front ? "open" : "shut") + " · chocolate doors " + (g.main ? "open" : "shut") + (g.lite ? " · LITE" : "") + (g.err ? " · last error: " + g.err : "") : "not built";
+    if (g.boats) $("bstat").textContent = g.boats.state.toUpperCase() + " · " + g.boats.secs + " s · aboard " + g.boats.aboard.reduce((a, c) => a + c, 0) + " · auto " + (g.boats.auto ? "on" : "off");
+    if (g.doors) {
+      $("doors").innerHTML = g.doors.map((d) => `<tr><td>${d.n}</td><td>${d.name}</td><td class="code">${d.code}</td><td>${d.open ? "OPEN" : "locked"}</td>
+        <td><button data-cmd="door ${d.n} open">Open</button> <button data-cmd="door ${d.n} close">Close</button>
+        <button data-newcode="${d.n}">New code</button></td></tr>`).join("");
+    }
+  }
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest("button"); if (!t) return;
+    if (t.id === "connect") return connect();
+    if (t.dataset.cmd) return send(t.dataset.cmd);
+    if (t.dataset.newcode) { const c = prompt("New code for door " + t.dataset.newcode + " (digits)"); if (c) send("code " + t.dataset.newcode + " " + c.replace(/\D/g, "")); }
+  });
+})();
+</script>
+</body>
+</html>
