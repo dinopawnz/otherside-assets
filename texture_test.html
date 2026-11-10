@@ -1,0 +1,28 @@
+<!--
+  4K TEXTURE TEST - Otherside MML
+  The same resolution chart at 1K, 2K, 4K and 8K. Walk right up to each panel and read the small text / fine lines.
+  FRONT ROW  = 3D models (.glb with the picture inside) + one 4K model packed with meshopt + gzip (like the factory's models)
+  BACK ROW   = the same pictures as m-image
+  If the 4K panel shows sharp 6-9 px text and crisp 1 px lines that look blurry on 2K, Otherside keeps 4K detail.
+  If 4K looks exactly like 2K (or 1K), Otherside shrinks big textures and 2K is all you need.
+  If a panel never appears, that size is too big for Otherside (watch the 8K one).
+  Origin = the front edge of the floor; the panels are in front of you (towards -z).
+-->
+<m-group id="tt">
+  <m-cube x="0" y="-0.5" z="-11" width="44" height="1" depth="34" color="#3a1d3a" collide="true"></m-cube>
+  <m-label x="0" y="6.4" z="-8" width="12" height="1.2" content="3D MODELS (.glb)" font-size="90" alignment="center" color="#2a0c1e" font-color="#ffe9a8" collide="false"></m-label>
+  <m-label x="0" y="6.4" z="-20" width="12" height="1.2" content="PICTURES (m-image)" font-size="90" alignment="center" color="#2a0c1e" font-color="#ffe9a8" collide="false"></m-label>
+</m-group>
+<script>
+(function () {
+  const BASE = "https://raw.githubusercontent.com/dinopawnz/otherside-assets/texture-test/";
+  const g = document.getElementById("tt");
+  const add = (tag, a) => { const n = document.createElement(tag); for (const k in a) n.setAttribute(k, String(a[k])); g.appendChild(n); return n; };
+  [["1k", -15], ["2k", -7.5], ["4k", 0], ["8k", 7.5]].forEach(([r, x]) => {
+    add("m-model", { src: BASE + "tex_test_" + r + ".glb", x, y: 0, z: -8, collide: "false", "cast-shadows": "false" });
+    add("m-image", { src: BASE + "tt_" + r + ".jpg", x, y: 2.6, z: -20, width: 4, height: 4, emissive: 0.3, collide: "false" });
+  });
+  add("m-model", { src: BASE + "tex_test_4k_packed.glb.gz", x: 15, y: 0, z: -8, collide: "false", "cast-shadows": "false" });
+  add("m-label", { x: 15, y: 5.3, z: -8, width: 4.2, height: 0.6, content: "4K PACKED (meshopt+gzip)", "font-size": 60, alignment: "center", color: "#2a0c1e", "font-color": "#ffe9a8", collide: "false" });
+})();
+</script>
