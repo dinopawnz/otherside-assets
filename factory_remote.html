@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chocolate Factory Remote</title>
+<title>Chocolate Factory Remote v2</title>
 <style>
   :root { --bg:#1b0f0a; --card:#2a1810; --edge:#5a3520; --text:#fbeedd; --dim:#c9a98a; --gold:#f2b84b; --pink:#ff6fb5; --mint:#3ddc97; --red:#ff5a5a; }
   * { box-sizing: border-box; }
@@ -30,7 +30,7 @@
 </style>
 </head>
 <body>
-<header><h1>🍫 Chocolate Factory — Host Remote</h1></header>
+<header><h1>🍫 Chocolate Factory v2 — Host Remote</h1></header>
 <main>
   <div class="card">
     <h2>Connect</h2>
@@ -63,6 +63,25 @@
       <div class="row"><button class="go" data-cmd="boats go">Send up</button><button data-cmd="boats down">Bring down</button><button data-cmd="boats reset">Reset to lagoon</button></div>
       <div class="row" style="margin-top:6px"><button data-cmd="boats auto on">Auto ON</button><button data-cmd="boats auto off">Auto OFF</button><span class="stat" id="bstat"></span></div>
     </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>Great Glass Elevator</h2>
+      <div class="row" id="liftbtns"></div>
+      <div class="row" style="margin-top:6px"><button data-cmd="lift open">Force open here</button><button data-cmd="lift heal">Reset / heal</button></div>
+      <div class="stat" id="lstat" style="margin-top:6px">—</div>
+    </div>
+    <div class="card">
+      <h2>Fizzy Float-Off (Fizzy Lifting Room)</h2>
+      <div class="row"><button class="big" data-cmd="fizzy start">START</button><button data-cmd="fizzy free on">Free play ON</button><button data-cmd="fizzy free off">Free play OFF</button><button data-cmd="fizzy reset">Reset bubbles</button></div>
+      <div class="stat" id="fstat" style="margin-top:6px">—</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Golden Ticket Rush (Wrapping Room)</h2>
+    <div class="row"><button class="big" data-cmd="gtr start 60">START 60 s</button><button data-cmd="gtr start 90">START 90 s</button><button data-cmd="gtr start 120">START 2 min</button><button data-cmd="gtr end">End now</button><button data-cmd="gtr reset">Reset board</button></div>
+    <div class="stat" id="gstat2" style="margin-top:6px">—</div>
+    <table id="gtrtop" style="margin-top:6px"></table>
   </div>
   <div class="card">
     <h2>Coded doors (Oompa Loompa staff)</h2>
@@ -121,6 +140,22 @@
     let g = {}; try { g = JSON.parse(b.attrs["data-game"] || "{}"); } catch (e) {}
     $("gstat").textContent = g.built ? "BUILT · " + (g.online || 0) + " online · gates " + (g.gates ? "open" : "shut") + " · front doors " + (g.front ? "open" : "shut") + " · chocolate doors " + (g.main ? "open" : "shut") + (g.lite ? " · LITE" : "") + (g.err ? " · last error: " + g.err : "") : "not built";
     if (g.boats) $("bstat").textContent = g.boats.state.toUpperCase() + " · " + g.boats.secs + " s · aboard " + g.boats.aboard.reduce((a, c) => a + c, 0) + " · auto " + (g.boats.auto ? "on" : "off");
+    if (g.lift) {
+      const lb = $("liftbtns");
+      if (!lb.children.length) lb.innerHTML = g.lift.stops.map((k, i) => `<button data-cmd="lift ${k}">${g.lift.names[i]}</button>`).join("");
+      const L = g.lift;
+      $("lstat").textContent = "AT " + L.names[L.stops.indexOf(L.at)] + (L.moving ? " · MOVING (" + L.leg + ") TO " + L.target.toUpperCase() : "") + (L.open ? " · DOORS OPEN" : " · DOORS SHUT") + (L.req.length ? " · CALLED: " + L.req.join(", ") : "") + (L.heals ? " · heals " + L.heals : "");
+    }
+    if (g.fizzy) {
+      const F = g.fizzy;
+      $("fstat").textContent = F.ph.toUpperCase() + (F.ph !== "idle" ? " · " + F.secs + " s" : "") + " · bubbles left " + F.left + " · riders " + F.riders + (F.free ? " · FREE PLAY" : "") + (F.winners && F.winners.length ? " · last winners: " + F.winners.join(", ") : "");
+    }
+    if (g.gtr) {
+      const G = g.gtr;
+      $("gstat2").textContent = G.ph.toUpperCase() + (G.ph === "run" ? " · " + G.secs + " s left" : "") + " · round " + G.round;
+      const rows = (G.ph === "run" ? G.top : (G.last && G.last.length ? G.last : G.top)) || [];
+      $("gtrtop").innerHTML = rows.map((r, i) => `<tr><td>${i + 1}</td><td>${String(r[0]).replace(/</g, "&lt;")}</td><td class="code">${r[1]} tickets</td></tr>`).join("");
+    }
     if (g.doors) {
       $("doors").innerHTML = g.doors.map((d) => `<tr><td>${d.n}</td><td>${d.name}</td><td class="code">${d.code}</td><td>${d.open ? "OPEN" : "locked"}</td>
         <td><button data-cmd="door ${d.n} open">Open</button> <button data-cmd="door ${d.n} close">Close</button>
