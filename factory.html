@@ -1,5 +1,5 @@
 <!--
-  THE CHOCOLATE FACTORY  v2.1  -  Otherside MML  (crew: candy_crew_orange_greenhair)
+  THE CHOCOLATE FACTORY  v2.2  -  Otherside MML  (crew: candy_crew_orange_greenhair)
   ============================================================
   LIVE BUILD: this document starts as a small PLACER (a chocolate bar). Open the host remote (factory_remote.html, PIN 2462 = C-H-O-C)
   and press LIVE BUILD to raise the factory. Press it again to fold everything back into the placer.
@@ -53,7 +53,8 @@
     return n;
   }
   // models are packed .glb.gz (+ VER so a re-textured upload is never served stale); colliders are plain .glb
-  const src = (f) => BASE + f + ".glb.gz" + VER;
+  const VERS = { cf2_shaft: "?v=5" };      // files changed since the last upload get their own version so only they re-download
+  const src = (f) => BASE + f + ".glb.gz" + (VERS[f] || VER);
   const rawSrc = (f) => BASE + f + ".glb" + VER;
   const img = (f) => BASE + f + VER;
   const model = (f, attrs, parent) => el("m-model", Object.assign({ src: src(f), collide: "false", "cast-shadows": "false" }, attrs || {}), parent);
