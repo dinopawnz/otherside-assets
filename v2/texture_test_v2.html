@@ -1,0 +1,24 @@
+<!--
+  TEXTURE TEST v2 - real sculptures - Otherside MML
+  Five stations in a row: 1K, 2K, 4K, 8K and 4K PACKED (meshopt + gzip, like the factory's models).
+  Each station = a blue-and-white porcelain urn (fine lines, dots, tiny lettering), a mosaic sphere (small tiles with thin grout)
+  and a chart plaque. Walk right up to each one and compare.
+  CHART PLAQUE: each block has four striped bars marked 1K, 2K, 4K, 8K. A bar that shows clean stripes = that detail level
+  reached your screen; a bar that is flat grey = it was lost. Count the striped bars on each station's plaque.
+  The tiny codes next to the bars only become readable from that level up (2K: JHHE, 4K: 2DY2, 8K: 7UCV).
+  Origin = the front edge of the floor; the stations are in front of you.
+-->
+<m-group id="tt">
+  <m-cube x="0" y="-0.5" z="-10" width="72" height="1" depth="24" color="#3a1d3a" collide="true"></m-cube>
+</m-group>
+<script>
+(function () {
+  const BASE = "https://raw.githubusercontent.com/dinopawnz/otherside-assets/texture-test/v2/";
+  const g = document.getElementById("tt");
+  const add = (tag, a) => { const n = document.createElement(tag); for (const k in a) n.setAttribute(k, String(a[k])); g.appendChild(n); return n; };
+  [["1k", "1K", -28], ["2k", "2K", -14], ["4k", "4K", 0], ["8k", "8K", 14], ["4k_packed", "4K PACKED", 28]].forEach(([f, label, x]) => {
+    add("m-model", { src: BASE + "station_" + f + (f.indexOf("packed") > 0 ? ".glb.gz" : ".glb"), x, y: 0, z: -10, collide: "false", "cast-shadows": "false" });
+    add("m-label", { x, y: 6.0, z: -12.4, width: 6, height: 1.2, content: label, "font-size": 110, alignment: "center", color: "#2a0c1e", "font-color": "#ffe9a8", collide: "false" });
+  });
+})();
+</script>
