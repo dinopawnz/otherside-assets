@@ -1,9 +1,7 @@
 THE CHOCOLATE FACTORY - setup
 =============================
-1. On GitHub create a PUBLIC repo named  factory  (account dinopawnz).
-   Upload every file in the "models" folder to the repo ROOT on the main branch (drag & drop, 70 files).
-   The MML loads them from  https://raw.githubusercontent.com/dinopawnz/factory/main/<name>.glb.gz
-   (If you use another repo/branch, change BASE at the top of factory.html.)
+1. Models are already on GitHub: dinopawnz/otherside-assets, branch "chocolate-factory".
+   The MML loads them from  https://raw.githubusercontent.com/dinopawnz/otherside-assets/chocolate-factory/<name>.glb.gz
 2. Put factory.html in your "Otherside MMLs" folder (served by mml-cli on port 7079 / ngrok).
 3. In Otherside place the document: you get a small chocolate-bar PLACER. Put it where players arrive.
    The factory rises 152 m behind it with the front facing the placer.
